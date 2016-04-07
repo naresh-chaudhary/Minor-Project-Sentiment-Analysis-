@@ -15,7 +15,7 @@ class listener(StreamListener):
         d=(json.loads(data))
         print d["text"]
         print "-"*80
-        return(True)
+        return(d)
 
     def on_error(self, status):
         print status
@@ -26,3 +26,5 @@ def tweets():
 	twitterStream = Stream(auth, listener())
 	twitterStream.filter(track=["ENGvsWI"])
 
+if __name__=="__main__":
+	tweets()
