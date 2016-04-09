@@ -15,7 +15,7 @@ class listener(StreamListener):
         d=(json.loads(data))
         print d["text"]
         print "-"*80
-        return(d)
+        return(True)
 
     def on_error(self, status):
         print status
