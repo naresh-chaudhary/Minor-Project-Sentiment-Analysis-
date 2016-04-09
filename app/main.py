@@ -24,7 +24,7 @@ def tweets():
 	auth = OAuthHandler(ckey, csecret)
 	auth.set_access_token(atoken, asecret)
 	twitterStream = Stream(auth, listener())
-	twitterStream.filter(track=["ENGvsWI"])
+        return	twitterStream.filter(track=["ENGvsWI"])
 
 if __name__=="__main__":
-	tweets()
+	print tweets()

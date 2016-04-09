@@ -9,11 +9,13 @@ csecret="GzRZbkQxZYpfzy6Azhu5JhpfXuo10tFCpesVYFGed4AvLzh0DV"
 atoken="147847030-tkzBAv4d5LnLoxv6IwyRRmh1CBe6MgjLbtkUVoRB"
 asecret="Cbud9QKkT218O9dwWjNZqQXGPyg8PPeWYG1GompUiQlsT"
 
+k = open("feeshike.txt","w")
 class listener(StreamListener):
 
     def on_data(self, data):
         d=(json.loads(data))
-        print d["text"]
+        k.write(str(d))
+	k.write("\n")
         print "-"*80
         return(True)
 
@@ -25,6 +27,6 @@ auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 
 twitterStream = Stream(auth, listener())
-twitterStream.filter(track=["ENGvsWI"])
+twitterStream.filter(track=["india"])
 
 
