@@ -2,29 +2,54 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 import json
+from krati_twitter_credentials import ckey,csecret,atoken,asecret
 
-#consumer key, consumer secret, access token, access secret.
-ckey="MAwfDbRqDa54geK8dxy4Vj4s0"
-csecret="GzRZbkQxZYpfzy6Azhu5JhpfXuo10tFCpesVYFGed4AvLzh0DV"
-atoken="147847030-tkzBAv4d5LnLoxv6IwyRRmh1CBe6MgjLbtkUVoRB"
-asecret="Cbud9QKkT218O9dwWjNZqQXGPyg8PPeWYG1GompUiQlsT"
+
+
+print ckey
+print csecret
+print atoken
+print asecret
+
+
+f=open("NitSrinagar.txt","w")
 
 class listener(StreamListener):
+    
+    def on_status(self, status):
+        print(status.text)
 
     def on_data(self, data):
         d=(json.loads(data))
-        print d["text"]
+        f.write(d["text"]+"\n")
         print "-"*80
-        return(d)
+        return(True)
 
-    def on_error(self, status):
-        print status
+    def on_error(self, status_code):
+        print status_code
+        if status_code==420:
+            print "exiting"
+            return False
 
-def tweets():
-	auth = OAuthHandler(ckey, csecret)
-	auth.set_access_token(atoken, asecret)
-	twitterStream = Stream(auth, listener())
-        return	twitterStream.filter(track=["ENGvsWI"])
 
-if __name__=="__main__":
-	print tweets()
+auth = OAuthHandler(ckey, csecret)
+auth.set_access_token(atoken, asecret)
+twitterStream = Stream(auth, listener())
+twitterStream.filter(track=["NitSrinagar"],languages="en")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
