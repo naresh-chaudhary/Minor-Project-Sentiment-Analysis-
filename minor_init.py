@@ -1,6 +1,7 @@
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
+from analyser import Analyser
 import json
 
 #consumer key, consumer secret, access token, access secret.
@@ -10,13 +11,15 @@ atoken="147847030-tkzBAv4d5LnLoxv6IwyRRmh1CBe6MgjLbtkUVoRB"
 asecret="Cbud9QKkT218O9dwWjNZqQXGPyg8PPeWYG1GompUiQlsT"
 
 k = open("feeshike.txt","w")
+analyze =  Analyser()
 class listener(StreamListener):
 
     def on_data(self, data):
-        d=(json.loads(data))
-        k.write(str(d))
-	k.write("\n")
-        print "-"*80
+        try:
+            d=(json.loads(data))
+            print analyze.get_all_info(d)
+        except:
+            pass
         return(True)
 
     def on_error(self, status):

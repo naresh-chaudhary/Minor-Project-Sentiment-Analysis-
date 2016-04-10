@@ -16,6 +16,28 @@ training_set = sa.apply_features(train_data)
 #test_set = sentim_analyzer.apply_features(testing_docs)
 trainer = NaiveBayesClassifier.train
 classifier = sa.train(trainer, training_set)
-def getPolarity():
-	sia = SentimentIntensityAnalyzer() 
-	sia.polarity_scores(stri)
+
+class Analyser():
+    def __init__(self):
+        self.sia = SentimentIntensityAnalyzer() 
+        print "OBJECT CREATED"
+
+    def getPolarity(self, tweet):
+        return (self.sia.polarity_scores(tweet['text']))
+
+    def getlocation(Self, tweet):
+        if tweet['user']['location']:
+            return str(tweet['user']['location'])
+        else:
+            return str(tweet['user']['time_zone'])
+
+    def gettimestamp(self, tweet):
+        return tweet['created_at']
+
+    def get_all_info(self, tweet):
+        print "Tweet Received"
+        polarity = self.getPolarity(tweet)
+        loc = self.getlocation(tweet)
+        ts = self.gettimestamp(tweet)
+        print tweet['text'],polarity,loc,ts
+        return ((tweet['data'],polarity,loc,ts))
