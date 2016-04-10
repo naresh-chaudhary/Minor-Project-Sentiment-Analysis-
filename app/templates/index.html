@@ -3,11 +3,50 @@
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/static/js/bootstrap.min.js">
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
 </head>
+
+
 
 <body>
 
 <h5>"testing"</h5>
+
+{{"hey"}}
+
+
+<div id="container" style="width:100%; height:400px;">
+</div>
+
+<script type="text/javascript">
+$(function () { 
+    $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Fruit Consumption'
+        },
+        xAxis: {
+            categories: ['Apples', 'Bananas', 'Oranges']
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: [{
+            name: 'Jane',
+            data: [1, 0, 4]
+        }, {
+            name: 'John',
+            data: [5, 7, 3]
+        }]
+    });
+});
+</script>
+{{bye}}
 </body>
 
 </html>

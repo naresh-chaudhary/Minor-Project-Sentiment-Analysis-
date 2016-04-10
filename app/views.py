@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template
-from main import tweets
+#from main import tweets
 
 
 @app.route('/')
