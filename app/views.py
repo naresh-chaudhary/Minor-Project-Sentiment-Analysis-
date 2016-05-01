@@ -1,9 +1,9 @@
 from app import app
 import json
-from time import time
+import time
 from random import random
 from flask import Flask, render_template, make_response,request, redirect
-from daemon import getTweets, getPoles
+from daemon import getTweets, getPoles, getTextAnalyse
 
 
 @app.route('/', methods = ['GET', "POST"])
@@ -22,6 +22,18 @@ def home():
     return render_template('index.html', data='test')
 
 
+@app.route('/textanalyse', methods = ['GET','POST'])
+def getData():
+    result = None
+    #keywords = {'Adjective': ['stick', 'incognito', 'more'], 'Verb': ['be', 'kept', 'Learn'],
+     #'Noun': ['Pages', 'incognito', 'tabs', 'browser', 'history', 'cookie', 
+     #'store', 'search', 'history', 'you', 'tabs', 'files', 'incognito', 'browsing']}
+    if request.method == "POST":
+        if request.form['texta']:
+            result = getTextAnalyse(request.form['texta'])
+            print result
+            return render_template('textAnalysis.html', result = (result[0], result[1]), text = request.form['texta'], keywords=result[2])
+    return render_template('textAnalysis.html', result = result)
 '''
 @app.route('/live-data')
 def live_data():

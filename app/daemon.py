@@ -28,13 +28,18 @@ class listener(StreamListener):
         print status
 
 def getTweets(query):
+    global tweets
     auth = OAuthHandler(ckey, csecret)
     auth.set_access_token(atoken, asecret)
     twitterStream = Stream(auth, listener())
+    tweets = []
     twitterStream.filter(track=[query])
     return tweets
 
 def getPoles():
     return analyze.getScores()
+
+def getTextAnalyse(text):
+    return analyze.textAnalyse(text)
 
 

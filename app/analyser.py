@@ -3,6 +3,7 @@ from nltk.corpus import subjectivity
 from nltk.sentiment import SentimentAnalyzer
 from nltk.sentiment.util import *
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from tagger import Tagger
 n=100
 subj = [(sent, 'subj') for sent in subjectivity.sents(categories='subj')[:n]]
 obj = [(sent, 'subj') for sent in subjectivity.sents(categories='obj')[:n]]
@@ -32,7 +33,7 @@ class Analyser():
             self.p["negative"]+=1
         return temp
 
-    def getlocation(Self, tweet):
+    def getlocation(self, tweet):
         if tweet['user']['location']:
             return str(tweet['user']['location'])
         else:
@@ -51,3 +52,28 @@ class Analyser():
 
     def getScores(self):
         return self.p
+
+    def textAnalyse(self, text):
+        t = Tagger(text)
+        wordcloud = t.pos_tag()
+        lines = text.split('.')
+        pol_val = 0.0
+        result = ''
+        size = len(lines)
+        for line in lines:
+            temp = self.sia.polarity_scores(line)
+            pol_val+=temp['compound']
+            print line,temp
+        pol_val = pol_val/size
+        if pol_val < -0.1:
+            result = "n"
+        elif pol_val > 0.1:
+            result = "p"
+        else:
+            result = "x"
+        print pol_val, result
+        return (result, abs(pol_val)*100.0, wordcloud )
+
+
+
+
