@@ -16,7 +16,6 @@ training_set = sa.apply_features(train_data)
 #test_set = sentim_analyzer.apply_features(testing_docs)
 trainer = NaiveBayesClassifier.train
 classifier = sa.train(trainer, training_set)
-sia = SentimentIntensityAnalyzer()
-stri = raw_input("Enter Information :")
-print stri
-print sia.polarity_scores(stri)
+def getPolarity():
+    sia = SentimentIntensityAnalyzer() 
+    sia.polarity_scores(stri)

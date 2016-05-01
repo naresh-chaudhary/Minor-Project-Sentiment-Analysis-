@@ -3,8 +3,7 @@ from nltk.corpus import subjectivity
 from nltk.sentiment import SentimentAnalyzer
 from nltk.sentiment.util import *
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
-n = 100
+n=100
 subj = [(sent, 'subj') for sent in subjectivity.sents(categories='subj')[:n]]
 obj = [(sent, 'subj') for sent in subjectivity.sents(categories='obj')[:n]]
 train_data = subj +obj
@@ -19,11 +18,19 @@ classifier = sa.train(trainer, training_set)
 
 class Analyser():
     def __init__(self):
-        self.sia = SentimentIntensityAnalyzer() 
+        self.sia = SentimentIntensityAnalyzer()
+        self.p = {"positive": 0, "negative": 0, "neutral":0}
         print "OBJECT CREATED"
 
     def getPolarity(self, tweet):
-        return (self.sia.polarity_scores(tweet['text']))
+        temp = self.sia.polarity_scores(tweet['text'])
+        if temp['compound']==0.0:
+            self.p["neutral"]+=1
+        elif temp['compound'] > 0.0:
+            self.p["positive"]+=1
+        else:
+            self.p["negative"]+=1
+        return temp
 
     def getlocation(Self, tweet):
         if tweet['user']['location']:
@@ -39,5 +46,8 @@ class Analyser():
         polarity = self.getPolarity(tweet)
         loc = self.getlocation(tweet)
         ts = self.gettimestamp(tweet)
-        print tweet['text'],polarity,loc,ts
-        return ((tweet['data'],polarity,loc,ts))
+        #print tweet['text'],polarity,loc,ts
+        return ((tweet['text'],polarity,loc,ts))
+
+    def getScores(self):
+        return self.p

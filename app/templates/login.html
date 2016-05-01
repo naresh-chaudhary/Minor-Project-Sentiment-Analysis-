@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>UniKey | Lets Get Secured.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link href="../static/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="../static/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+  <link href="../static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  
+</head>
+<body>
+  <div class="navbar-fixed">
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Unikey</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="http://snapego.wordpress.com" target="_blank">Login</a></li>
+        <li><a class="waves-effect waves-red btn-flat modal-trigger" href="#modal1">Sign Up</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="http://snapego.wordpress.com" target="_blank">Login</a></li>
+        <li><a class="waves-effect waves-red btn-flat modal-trigger" href="#modal1">Sign Up</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="fa fa-bars red-text"></i></a>
+    </div>
+  </nav>
+  </div>
+
+ <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12 offset-l3">
+            <div class="card z-depth-4 white" style="margin-top: 20%; !important" >
+              <div class="card-content">
+              <center>
+                <div class="card-title red-text">LOG IN</div>
+                <hr>
+                </center>
+           <form action="" method="post">
+              <div class="row">
+              <p><br/></p>
+                <div class="input-field l10 s12">
+                  <i class="fa fa-envelope prefix"></i>
+                  <input type="email" name="email" value="{{request.form.email}}" class="validate" required="required">
+                  <label for="email">Email</label>
+                </div>
+              </div>
+              <div class="row">
+              <div class="input-field l10 s12">
+                  <i class="fa fa-envelope prefix"></i>
+                  <input type="password" name="pswd" value="{{request.form.pswd}}" class="validate" required="required">
+                  <label for="pswd">Password</label>
+                </div>
+              </div>
+              <div class="row">
+              <center>
+              <button class="btn waves-effect waves-light" type="submit" name="action" >Log In<i class="fa fa-paper-plane right"></i>
+              </button> 
+              </center>
+              </div>
+              </div>
+          </form>
+          {%if error %}
+            <div class="row center">
+              <p class="red-text">{{error}}</p>
+            </div>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+      </div>
+    <div class="parallax"><img src="../static/img/bgr.gif" alt=""></div>
+    </div>
+  </div>
+  <script src="../static/js/jquery.min.js"></script>
+  <script src="../static/js/materialize.min.js"></script>
+  <script src="../static/js/init.js"></script>
+  <script src="../static/js/jQuerySimpleCounter.js"></script>
+  </body>
+  </html>

@@ -8,21 +8,12 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link href="static/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="static/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
-  <link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <script src="static/js/jquery.min.js"></script>
-  <script src="static/js/materialize.min.js"></script>
-  <script src="static/js/init.js"></script>
-  <script src="static/js/jQuerySimpleCounter.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function () {
-    $("#loading").hide();
-    $("#submit").click(function() {
-     $('#query').hide();
-     $('#loading').show();
-     
-    });
-  });
-  </script>
+  <link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/> 
+   <script src="static/js/jquery.min.js"></script>
+ <script src="https://code.highcharts.com/highcharts.js"></script>
+ <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
 </head>
 
 <body>
@@ -45,33 +36,48 @@
     </div>
   </nav>
   </div>
+<div class="row">
+  <center><h3>You looked For : <span class ="red-text"> {{ query }} </span></h3></center>
+</div>
 
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-       {% if error %}
-        <div class="row">
-          <p class="red-text">{{ error }}</p>
-          </div>
-        {% endif %}
-      <div class="row">
-        <form id="query" action="" method="post">
-          <div class="row">
-            <div class="input-field col l6 s12">
-              <i class="fa fa-search prefix"></i>
-              <input type="text" name="query" value="{{request.form.query}}"class="validate" required="required">
-              <label for="query">Enter Your Query</label>
-            </div>
-            <button class="btn waves-effect waves-light red lighten-2" id="submit" type="submit" name="action" style="margin-bottom: -50px; margin-left: 30px;">Search<i class="fa fa-search right"></i>
-            </button> 
-          </div>
-        </form>
-        <div id = "loading">
-        <center><h5>Loading Tweets</h3><img src = "/static/img/loading.gif"></div></center>
+<div id="piechart" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div class ="row">
+  {% for tweet in tweets %}
+    {%  if tweet[1]['compound']|float > 0.0 %}
+      <div class ="col l4 offset-l1 card-panel teal">
+        <div class="white-text"><p>{{ tweet[0]|string }}</p></div>
+        <hr>
+        <ul style="list-style: in">
+        {% for score in tweet[1] %}
+          <li style="display: inline">{{ score }} : {{ tweet[1][score]|string}} &nbsp; | &nbsp;</li>
+        {% endfor %}
+        </ul>
       </div>
-     </div>
-  </div>
 
+    {% elif tweet[1]['compound']|float == 0.0 %}
+      <div class ="col l4 offset-l1 card-panel grey">
+        <div class="white-text"><p>{{ tweet[0]|string }}</p></div>
+        <hr>
+        <ul style="list-style: in">
+        {% for score in tweet[1] %}
+          <li style="display: inline">{{ score }} : {{ tweet[1][score]|string}} &nbsp; | &nbsp;</li>
+        {% endfor %}
+        </ul>
+      </div>
 
+    {% else %}
+      <div class ="col l4 offset-l1 card-panel orange">
+        <div class="white-text"><p>{{ tweet[0]|string }}</p></div>
+        <hr>
+        <ul style="list-style: in">
+        {% for score in tweet[1] %}
+          <li style="display: inline">{{ score }} : {{ tweet[1][score]|string}} </li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
   <div id="counter" class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
       <div class="container">
@@ -131,22 +137,43 @@
 
 
   <!--  Scripts-->
-<script type="text/javascript">
-  var chk=1;
-  $(function() {
-  var oTop = $('#counter').offset().top - window.innerHeight;
-    $(window).scroll(function(){
-    var pTop = $('body').scrollTop();
-    
-    if( pTop > oTop && chk > 0){
-        $('#count').jQuerySimpleCounter({
-          start:50,
-          end:1200,
-          duration: 4000
-        });
-        chk=0;
-    }
-  });
+  <script src="static/js/materialize.min.js"></script>
+  <script src="static/js/init.js"></script>
+  <script src="static/js/jQuerySimpleCounter.js"></script>
+  <script type="text/javascript">
+  $(function () {
+    $('#piechart').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Polarity Analysis For Tweets with Query {{ query }}'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Polarity of Tweets',
+            colorByPoint: true,
+            data: {{pol|safe}}
+        }]
+    });
 });
   </script>
 

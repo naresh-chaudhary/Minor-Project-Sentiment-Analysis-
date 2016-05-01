@@ -9,20 +9,19 @@ from analyser import Analyser
 
 
 k = open("feeshike.txt","a")
-
 analyse=Analyser()
-
+analysed_tweet=''
 class listener(StreamListener):
 
     def on_data(self, data):
         d=(json.loads(data))
+        k.write("#"*60)
         k.write(str(d))
         k.write("\n")
         print "-"*80
-        return analyse.get_all_info(d)
-       
-      
-
+        analysed_tweet=analyse.get_all_info(d)
+        print analysed_tweet
+        return True
 
     def on_error(self, status):
         print status
@@ -34,10 +33,6 @@ class Util():
         self.twitterStream = Stream(auth, listener())
 
     def get_tweets(self):
-        return self.twitterStream.filter(track="NitSrinagar")
-
-
-
- 
+        return self.twitterStream.filter(track=["NitSrinagar"])
 
 
