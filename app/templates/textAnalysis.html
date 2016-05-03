@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Sentoo | Sentiment Analytics At Its Best.</title>
+  <title>Sentiment Analyser | Sentiment Analytics At Its Best.</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -16,9 +16,14 @@
   <script type="text/javascript">
    $(document).ready(function () {
     $("#loading").hide();
+    $("#loading1").hide();
     $("#submit").click(function() {
      $('#querytext').hide();
      $('#loading').show();
+    });
+    $("#submit2").click(function() {
+     $('#fileupload').hide();
+     $('#loading1').show();
      
     });
   });
@@ -30,16 +35,15 @@
 <div class="navbar-fixed">
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Sentoo | Analyse Sentiments</a>
+      <a id="logo-container" href="#" class="brand-logo">Sentiment Analyser 
+        | Minor Project</a>
       <ul class="right hide-on-med-and-down">
         <li><a class="waves-effect waves-red btn-flat modal-trigger" href="#">Analyse Tweet</a></li>
-        <li><a href="http://snapego.wordpress.com" target="_blank">Anayse Text</a></li>
-        
+        <li><a href="#!" target="_blank">Anayse Text</a></li>   
       </ul>
-
       <ul id="nav-mobile" class="side-nav">
         <li><a class="waves-effect waves-red btn-flat modal-trigger" href="#">Analyse Tweet</a></li>
-        <li><a href="http://snapego.wordpress.com" target="_blank">Analyse Text</a></li>
+        <li><a href="#!" target="_blank">Analyse Text</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="fa fa-bars red-text"></i></a>
     </div>
@@ -54,7 +58,7 @@
         </button>
       </div>
       <div class="col l4 offset-l2">
-        <button class="btn waves-effect waves-light teal lighten-2 modal-trigger" href="#modal2">Upload File<i class="fa fa-file-text-o right"></i>
+        <button class="btn waves-effect waves-light teal lighten-2 modal-trigger" href="#modal2">Upload File<i class="fa fa-upload right"></i>
         </button>
       </div>
     </div>
@@ -75,7 +79,7 @@
               <textarea id="texta" name="texta" value="{{request.form.texta}}" class="materialize-textarea" required="required"></textarea>
               <label for="texta">Enter Text To Analyse</label>
             </div>
-            <button class="btn waves-effect waves-light red lighten-2" id="submit" type="submit" name="action" style="margin-bottom: -50px; margin-left: 30px;">Submit Text
+            <button class="btn waves-effect waves-light red lighten-2" id="submit" type="submit" name="submit" value="text">Submit Text
             </button> 
           </div>
         </form>
@@ -85,6 +89,38 @@
      </div>
   </div>
 </div>
+
+
+<div id="modal2" class="modal">
+    <div class="modal-content">
+       {% if error %}
+        <div class="row">
+          <p class="red-text">{{ error }}</p>
+          </div>
+        {% endif %}
+      <div class="row">
+        <form id="fileupload" action="" method="post" enctype="multipart/form-data">
+          <div class="row">
+            <div class="file-field input-field">
+              <div class="btn">
+              <span>Browse File<i class="fa fa-upload right"></i></span>
+              <input type="file" name="file">
+            </div>
+            <div class="file-path-wrapper">
+            <input class="file-path validate" required="required" type="text">
+            </div>
+            </div>
+            <button class="btn waves-effect waves-light red lighten-2" id="submit2" type="submit" name="submit" value="file" style="margin-bottom: -50px;">Submit File
+            </button> 
+         </div>
+        </form>
+        <div id = "loading1">
+        <center><h3>Analysing Text</h3><img src = "/static/img/loading.gif"></center>
+      </div>
+     </div>
+  </div>
+</div>
+
 
   {% if result %}
     <br>
@@ -140,30 +176,11 @@
       </div>
   {% endif %}
 
-  <div id="counter" class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <div class="row center white-text">
-          <p><br><br><br></p>
-          <div id="count" class="count-number"></div>
-        </div>
-        <div class="row">
-          <p><br><br></p>
-          <h5 class="header center white-text">Tweets Have Been Anaysed Till Now.</h5>
-          <p class="white-text center"><br><br><br>
-          <center><h5><a class="waves-effect waves-white btn-flat modal-trigger center white-text" href="#modal1">Get Started</a></h5>
-          <center></p>
-        </div>
-      </div>
-    </div>
-    <div class="parallax"><img src="static/img/sharebg.jpg" alt="Unsplashed background img 3"></div>
-  </div>
-
   <footer class="page-footer red lighten-2">
     <div class="container">
       <div class="row center white-text">
         <ul>
-        <li><a href="https://www.facebook.com/snapego" target="_blank" class="white-text"><i class="fa fa-facebook fa-2x"></i></a></li>
+        <li><a href="https://www.facebook.com/" target="_blank" class="white-text"><i class="fa fa-facebook fa-2x"></i></a></li>
         <li><a href="#" class="white-text"><i class="fa fa-twitter fa-2x"></i></a></li>
         <li><a href="#" class="white-text"><i class="fa fa-google-plus fa-2x"></i></a></li>
         <li><a href="#" class="white-text"><i class="fa fa-envelope fa-2x"></i></a></li>
@@ -176,7 +193,7 @@
             <li><a class="brown-text" href="#!">Careers</a></li>
             <li><a class="brown-text" href="#!">Privacy</a></li>
             <li><a class="brown-text" href="#!">Team</a></li>
-            <li><a class="brown-text" href="http://snapego.wordpress.com" target="_blank">Blog</a></li>
+            <li><a class="brown-text" href="#!" target="_blank">Blog</a></li>
             <li><a class="brown-text" href="#!">News</a></li>
 
           </ul>
@@ -188,7 +205,7 @@
       <div class="row">
         <div class="col l6">
           <span class="brown-text">
-          &copy; 2015 | Snapego</span>
+          &copy; 2016 | NIT-B</span>
         </div>
         <div class="col l6 right brown-text">
           <p class="right">Handcrafted With <span class="white-text"><i class="fa fa-heart fa-2x"></i></span> in India.</p> 

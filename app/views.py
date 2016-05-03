@@ -1,9 +1,21 @@
+#views.py
+
 from app import app
-import json
+import json,os
 import time
 from random import random
 from flask import Flask, render_template, make_response,request, redirect
 from daemon import getTweets, getPoles, getTextAnalyse
+from werkzeug import secure_filename
+
+UPLOAD_FOLDER = 'app/uploads'
+ALLOWED_EXTENSIONS = set(['txt'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @app.route('/', methods = ['GET', "POST"])
@@ -25,32 +37,22 @@ def home():
 @app.route('/textanalyse', methods = ['GET','POST'])
 def getData():
     result = None
-    #keywords = {'Adjective': ['stick', 'incognito', 'more'], 'Verb': ['be', 'kept', 'Learn'],
-     #'Noun': ['Pages', 'incognito', 'tabs', 'browser', 'history', 'cookie', 
-     #'store', 'search', 'history', 'you', 'tabs', 'files', 'incognito', 'browsing']}
     if request.method == "POST":
-        if request.form['texta']:
+        if request.form['submit']=='text':
             result = getTextAnalyse(request.form['texta'])
             print result
+            time.sleep(4)
             return render_template('textAnalysis.html', result = (result[0], result[1]), text = request.form['texta'], keywords=result[2])
+        else:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                print filename
+                f=open(os.path.join(app.config['UPLOAD_FOLDER'], filename),'r')
+                lines=f.read()
+                result = getTextAnalyse(lines)
+                print result
+                time.sleep(4)
+                return render_template('textAnalysis.html', result = (result[0], result[1]), text = lines, keywords=result[2])
     return render_template('textAnalysis.html', result = result)
-'''
-@app.route('/live-data')
-def live_data():
-    print "LIVE DATA CALLED"
-    data = u.get_tweets()
-    print "data:"
-    print data
-    print "analysed_tweet:"
-    print analysed_tweet
-    print "%"*60
-    v = (data[1]['compound']+1)/2
-    f.write(data[0]+"\n")
-    print data[0], v
-    data = [time() * 1000, v * 100]
-    f.write(str(data))
-    f.write("*"*50)
-    response = make_response(json.dumps(data))
-    response.content_type = 'application/json'
-    return response
-'''

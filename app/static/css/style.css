@@ -94,13 +94,6 @@ footer.page-footer {
   cursor: pointer;
 }
 
-.count-number
-{
-  outline-color: #ec523f;
-  font-weight: bolder;
-  font-size: 120px;
-}
-
 .error-404
 {
   outline-color: black;
